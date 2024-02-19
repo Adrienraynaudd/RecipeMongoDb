@@ -15,7 +15,7 @@ const RecipeSchema = mongoose.Schema({
     cookingTime: {type: Number, required: true},
     servings: {type: Number, required: true},
     date: {type: Date, default: Date.now},
-    // user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     desc: {type: String, required: true},
     tags: {type: [String], required: true},
     difficulty: {type: String, required: true, enum: ['Facile', 'Moyen', 'Difficile']},

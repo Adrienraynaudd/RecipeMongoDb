@@ -5,10 +5,9 @@ const bodyParser = require('body-parser');
 
 const RecipeRouter = require('./Routes/Recipe');
 const comment = require('./Routes/comment');
+const userRoutes = require('./Routes/user');
 
 const app = express();
-
-app.use('comment', comment)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
@@ -26,6 +25,8 @@ mongoose.connect("mongodb://localhost:27017").then(() => {
 app.use(bodyParser.json());
 
 app.use('/api/recipes', RecipeRouter);
+app.use('/api/comments', comment);
+app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => {
     res.send('Bonjour, monde !');

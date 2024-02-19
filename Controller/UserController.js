@@ -1,6 +1,6 @@
 // controllers/userController.js
 const User = require('../Models/User');
-const { authenticateToken } = require('../Service/auth');
+const { authenticateToken } = require('../Middleware/auth');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
