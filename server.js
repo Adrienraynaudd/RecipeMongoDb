@@ -8,4 +8,4 @@ app.listen(PORT, () => {
 app.get('/', (req, res) => {
     res.send('Bonjour, monde !');
   });
-  
+  app.use('/api/users', userRoutes);
