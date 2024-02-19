@@ -1,5 +1,8 @@
 const express = require('express');
+const comment = require('./Routes/comment');
 const app = express();
+
+app.use('comment', comment)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
