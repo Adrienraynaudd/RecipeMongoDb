@@ -16,7 +16,7 @@ app.listen(PORT, () => {
 
 app.use(compression());
 
-mongoose.connect("mongodb://localhost:27017").then(() => {
+mongoose.connect("mongodb://localhost:27017/nosql").then(() => {
   console.log('Connected to MongoDB with Success !');
 }).catch((err) => {
   console.log('MongoDB ERROR', err);

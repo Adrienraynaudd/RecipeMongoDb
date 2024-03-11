@@ -81,7 +81,7 @@ exports.updateRecipe = (req, res, next) => {
         });
     }
     const recipe = new Recipe({
-        _id: req.body.id,
+        _id: req.params.id,
         titre: req.body.titre,
         image: req.body.image,
         ingredients: ingredients,
@@ -89,13 +89,14 @@ exports.updateRecipe = (req, res, next) => {
         difficulty: req.body.difficulty,
         cookingTime: req.body.cookingTime,
         servings: req.body.servings,
-        user: req.userData.userId,
+        //user: req.userData.userId,
         desc: req.body.desc,
         tags: req.body.tags
     });
     Recipe.updateOne({_id: req.params.id}, recipe).then(result => {
         res.status(200).json({message: 'Update successful!'});
     }).catch(error => {
+        console.log(error);
         res.status(500).json({
             message: 'Could not update recipe!'
         });

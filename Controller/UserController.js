@@ -9,10 +9,9 @@ exports.createUser = async (req, res) => {
     const { username, email, password } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = await User.create({
-      username,
-      email,
+      username: username,
+      email: email,
       password: hashedPassword,
       role: 'user',
     });
@@ -25,72 +24,80 @@ exports.createUser = async (req, res) => {
 };
 
 exports.getUserById = async (req, res) => {
-    try {
+  try {
       const userId = req.params.id;
-      authenticateToken(req, res, async () => {
-        const user = await User.findByPk(userId);
-  
-        if (!user) {
+      const user = await User.findById(userId);
+      if (!user) {
           return res.status(404).json({ message: 'Utilisateur non trouvé' });
-        }
-        res.status(200).json(user);
-      });
-    } catch (error) {
+      }
+      res.status(200).json(user);
+  } catch (error) {
       console.error('Erreur lors de la récupération de l\'utilisateur :', error);
       res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur' });
-    }
-  };
-  
-  exports.updateUserById = async (req, res) => {
-    try {
+  }
+};
+
+exports.updateUserById = async (req, res) => {
+  try {
       const userId = req.params.id;
-      authenticateToken(req, res, async () => {
       const { username, email, password } = req.body;
-  
-      const existingUser = await User.findByPk(userId);
-      if (!existingUser) {
-        return res.status(404).json({ message: 'Utilisateur non trouvé' });
+
+      // Hash the new password if provided
+      let hashedPassword;
+      if (password) {
+          hashedPassword = await bcrypt.hash(password, 10);
       }
-  
-      const updatedUser = await existingUser.update({
-        username,
-        email,
-        password,
-        role: 'user',
-      });
-  
+
+      // Prepare the update object
+      const updateObj = {
+          username,
+          email,
+          role: 'user',
+      };
+      // Add hashed password to update object if it exists
+      if (hashedPassword) {
+          updateObj.password = hashedPassword;
+      }
+
+      // Find the user by id and update
+      const updatedUser = await User.findByIdAndUpdate(userId, updateObj, { new: true });
+
+      if (!updatedUser) {
+          return res.status(404).json({ message: 'Utilisateur non trouvé' });
+      }
+
       res.status(200).json(updatedUser);
-    });
-    } catch (error) {
+  } catch (error) {
       console.error('Erreur lors de la mise à jour de l\'utilisateur :', error);
       res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'utilisateur' });
-    }
-  };
+  }
+};
+
   
-  exports.deleteUserById = async (req, res) => {
-    try {
+exports.deleteUserById = async (req, res) => {
+  try {
       const userId = req.params.id;
-      authenticateToken(req, res, async () => {
-      const existingUser = await User.findByPk(userId);
-      if (!existingUser) {
-        return res.status(404).json({ message: 'Utilisateur non trouvé' });
+
+      // Supprime l'utilisateur par son ID
+      const result = await User.deleteOne({ _id: userId });
+
+      // Vérifie si un utilisateur a été supprimé
+      if (result.deletedCount === 0) {
+          return res.status(404).json({ message: 'Utilisateur non trouvé' });
       }
-  
-      await existingUser.destroy();
-  
+
       res.status(204).send();
-    });
-    } catch (error) {
+  } catch (error) {
       console.error('Erreur lors de la suppression de l\'utilisateur :', error);
       res.status(500).json({ message: 'Erreur lors de la suppression de l\'utilisateur' });
-    }
-  };
+  }
+};
+
   exports.getUserByEmailAndPassword = async (req, res) => {
     try {
       const { email, password } = req.body;
-  
-      const user = await User.findOne({ where: { email } });
-  
+
+      const user = await User.findOne({ email });
       if (!user) {
         return res.status(404).json({ message: 'Utilisateur non trouvé' });
       }
