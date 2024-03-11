@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 const RecipeRouter = require('./Routes/Recipe');
 const comment = require('./Routes/comment');
-const userRoutes = require('./Routes/user');
+const userRoutes = require('./Routes/UserRoutes');
 
 const app = express();
 
@@ -29,6 +29,6 @@ app.use('/api/comments', comment);
 app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => {
-    res.send('Bonjour, monde !');
-  });
-  app.use('/api/users', userRoutes);
+  res.send('Bonjour, monde !');
+});
+app.use('/api/users', userRoutes);

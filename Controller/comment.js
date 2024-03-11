@@ -1,11 +1,10 @@
 const { commentModel } = require('../Models/comment');
 const { default: mongoose } = require('mongoose');
-const comment = express.Router()
 
 mongoose.connect('mongodb://127.0.0.1:27017/nosql');
 
 
-export const getAllComments = async (req, res) => {
+exports.getAllComments = async (req, res) => {
     try {
         const comments = await commentModel.find({ recipe: req.params.id });
         res.json(comments);
@@ -15,7 +14,7 @@ export const getAllComments = async (req, res) => {
     }
 }
 
-export const makeComment = async (req, res) => {
+exports.makeComment = async (req, res) => {
     try {
         const newComment = new commentModel({
             user: req.body.user,

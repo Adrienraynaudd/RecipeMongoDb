@@ -1,13 +1,13 @@
 const express = require('express');
-const { getAllComments, makeComment } = require('../Controller/comment');
+const CommentController = require('../Controller/comment');
 const auth = require('../Middleware/auth');
 const router = express.Router();
 
 
 // read all comment of one recipe
-router.get('/:id', getAllComments)
+router.get('/:id', CommentController.getAllComments)
 
 // add a comment on a recipe
-router.post('/:id', auth, makeComment);
+router.post('/:id', auth, CommentController.makeComment);
 
 module.exports = router
