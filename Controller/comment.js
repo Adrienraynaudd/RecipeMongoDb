@@ -1,9 +1,6 @@
 const { commentModel } = require('../Models/comment');
 const { default: mongoose } = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1:27017/nosql');
-
-
 exports.getAllComments = async (req, res) => {
     try {
         const comments = await commentModel.find({ recipe: req.params.id });
