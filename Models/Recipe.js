@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const IngredientsSchema = mongoose.Schema({
     name: {type: String, required: true},
     quantity: {type: Number, required: true},
-    unit: {type: String, required: true, enum: ['g', 'kg', 'ml', 'cl', 'l', 'cuillère à soupe', 'cuillère à café', 'verre', 'tasse', 'bol', 'pincée', 'pincées', 'pincées']}
+    unit: {type: String, required: true, enum: ['g', 'kg', 'ml', 'cl', 'l', 'cuillère à soupe', 'cuillère à café', 'verre', 'tasse', 'bol', 'pincée', 'unité']}
 });
 
 const RecipeSchema = mongoose.Schema({

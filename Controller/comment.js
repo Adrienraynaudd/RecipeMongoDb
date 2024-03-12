@@ -1,4 +1,4 @@
-const { Comment } = require('../Models/Comment');
+const Comment = require('../Models/Comment');
 const { default: mongoose } = require('mongoose');
 
 exports.getAllComments = async (req, res) => {
@@ -12,19 +12,17 @@ exports.getAllComments = async (req, res) => {
 }
 
 exports.makeComment = async (req, res) => {
-    try {
         const newComment = new Comment({
             user: req.body.user,
             recipe: req.params.id,
             mark: req.body.mark,
             comment: req.body.comment,
         });
-
-        await newComment.save();
-
-        res.status(201).json({ message: 'Comment created successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to create comment' });
-    }
+        
+        newComment.save().then(createdComment => {
+            res.status(201).json({ message: 'Comment created successfully' });
+        }).catch(error => {
+            console.error(error);
+            res.status(500).json({ error: 'Failed to create comment' });
+        });
 };
